@@ -1,0 +1,7 @@
+//@name Хелсчек
+POST http://localhost:9099/zip
+content-type: application/json
+
+{
+  "body": ["./sampleDirectory/user/log.txt", "./sampleDirectory/user/messages.txt"]
+}
