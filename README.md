@@ -5,7 +5,7 @@ Binary stream with zip archive contained all files enumerated in request
 пример запроса указан в файле request.http
 
 для запуска
-go run .
+    go run .
 
 для тестов
-go test ./...
+    go test ./...
