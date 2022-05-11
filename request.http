@@ -1,5 +1,5 @@
-//@name Хелсчек
-POST http://localhost:9099/zip
+//@name downloadzip
+POST http://localhost:9099/downloadzip
 content-type: application/json
 
 {
