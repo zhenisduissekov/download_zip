@@ -1,11 +1,17 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/zhenisduissekov/download_zip/handler"
-	"net/http"
+)
+
+var (
+	port = ":9099"
 )
 
 func main() {
-	http.HandleFunc("/downloadzip", handler.ZipHandler)
-	http.ListenAndServe(":9099", nil)
+
+	r := gin.Default()
+	r.POST("/downloadzip", handler.ZipHandler)
+	r.Run(port)
 }

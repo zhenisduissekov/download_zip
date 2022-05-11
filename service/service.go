@@ -2,24 +2,28 @@ package service
 
 import (
 	"archive/zip"
+	"github.com/gin-gonic/gin"
 	"io"
 	"log"
-	"net/http"
 	"os"
 )
 
-func ZipFiles(w http.ResponseWriter, files []string) error {
-	zw := zip.NewWriter(w)
+func ZipFiles(c *gin.Context, files []string) (int, error) {
+	count := len(files)
+	zw := zip.NewWriter(c.Writer)
 	for _, val := range files {
-		readNzipFile(zw, val)
+		err := readNzipFile(zw, val)
+		if err != nil {
+			count -= 1
+		}
 	}
-	// close the zip Writer to flush the contents to the ResponseWriter
+
 	err := zw.Close()
 	if err != nil {
 		log.Println(err)
-		return err
+		return count, err
 	}
-	return nil
+	return count, nil
 }
 
 func readNzipFile(zw *zip.Writer, val string) error {
@@ -31,15 +35,12 @@ func readNzipFile(zw *zip.Writer, val string) error {
 
 	defer f.Close()
 
-	// write straight to the http.ResponseWriter
-
 	cf, err := zw.Create(f.Name())
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 
-	// copy the file contents to the zip Writer
 	_, err = io.Copy(cf, f)
 	if err != nil {
 		log.Println(err)
